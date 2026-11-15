@@ -1,20 +1,22 @@
 <div align="center">
 
-<img src="app/src/main/res/drawable/icon.png" width="120" alt="杂鱼 Zayu" />
+<img src="app/src/main/res/drawable/icon.png" width="120" alt="杂鱼Max Zayu" />
 
 # 杂鱼Max · Zayu
 
-**粘贴分享链接，直接高速下载 —— 一个开源的 Android 网盘解析下载应用**
+**粘贴分享链接，直接高速下载 —— 开源的网盘解析下载应用，Android + Windows 双端**
 
 识别夸克 / UC / 迅雷 / 百度 / 139 / 123 / 115 / 光鸭 / 蓝奏云 / 蓝奏云优享版 / 小飞机 / 城通 / PikPak / 联通云盘 / 天翼云盘 分享链接，自动匹配提取码，Range 分片并发 + 断点续传。
 
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square)](./LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Android-3DDC84?style=flat-square\&logo=android\&logoColor=white)](#构建)
+[![Platform](https://img.shields.io/badge/platform-Android%20%7C%20Windows-3DDC84?style=flat-square\&logo=android\&logoColor=white)](#构建)
 [![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat-square\&logo=kotlin\&logoColor=white)](https://kotlinlang.org/)
-[![Compose](https://img.shields.io/badge/Jetpack%20Compose-MD3Expressive-4285F4?style=flat-square\&logo=jetpackcompose\&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Compose](https://img.shields.io/badge/Compose-MD3Expressive-4285F4?style=flat-square\&logo=jetpackcompose\&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Release](https://img.shields.io/badge/release-v1.3.23-2ea44f?style=flat-square)](https://github.com/BingYan001/ZayuMax-Main/releases)
 
-[功能](#功能) · [支持平台](#支持平台) · [使用](#使用) · [构建](#构建) · [常见问题](#常见问题)
+[功能](#功能) · [支持平台](#支持平台) · [双端](#android--windows-双端) · [使用](#使用) · [构建](#构建) · [常见问题](#常见问题)
 
+[![官网](https://img.shields.io/badge/%E5%AE%98%E7%BD%91-zayu.pw-12B7F5?style=flat-square\&logo=googlechrome\&logoColor=white)](https://zayu.pw)
 [![QQ交流群](https://img.shields.io/badge/QQ%E7%BE%A4-436393968-12B7F5?style=flat-square\&logo=qq\&logoColor=white)](https://qm.qq.com/q/Xo6Fjonakm)
 
 </div>
@@ -29,7 +31,17 @@
 > **杂鱼是独立项目。** 本仓库不隶属于任何其他网盘解析项目，也不作为任何项目的下游或分支存在。
 > 界面、架构与平台适配均由本仓库自行维护。
 
-> 本仓库为 Android 端；桌面端（Windows）见 [Zayu-Desktop](https://github.com/tidain/YunX-Desktop)
+> **本仓库是主线。** Android 端与桌面端共享同一套解析内核，桌面端独立仓库见 [Zayu-Desktop](https://github.com/BingYan001/Zayu-Desktop)。
+
+## 下载
+
+| 端 | 安装包 | 说明 |
+| --- | --- | --- |
+| Android | [杂鱼Max-latest.apk](https://zayu.pw/downloads/Zayu-latest.apk) | minSdk 24 / targetSdk 34，约 6 MB |
+| Windows | [Zayu-Desktop-setup-latest.exe](https://zayu.pw/downloads/Zayu-Desktop-setup-latest.exe) | 安装版，含开始菜单与卸载 |
+| Windows | [Zayu-Desktop-latest.zip](https://zayu.pw/downloads/Zayu-Desktop-latest.zip) | 便携版，解压即用 |
+
+全部历史版本见 [Releases](https://github.com/BingYan001/ZayuMax-Main/releases)，国内镜像走官网 [zayu.pw](https://zayu.pw)。
 
 ## 截图
 
@@ -52,6 +64,8 @@
 
 - **多平台登录** —— 夸克 / UC / 百度 / 139 / 115 使用 WebView Cookie；迅雷 / 光鸭 使用账号密码 / 短信验证码；123 使用账号密码换取 JWT；蓝奏云 / 蓝奏云优享版 使用账号密码；PikPak 使用 access_token / refresh_token；联通云盘、天翼云盘使用 Cookie 或 token
 
+- **登录态保活** —— 拦截器按域名回写会话 Cookie，同名覆盖 / 删除指令移除 / 未出现字段保留；迅雷、光鸭的轮换 refresh_token 刷新加锁单飞，避免并发互踢
+
 - **凭证加密** —— 账号凭证经 Android Keystore 加密后落盘，不明文存储
 
 - **认证备份** —— 使用用户口令派生密钥，以 AES-GCM 加密 Cookie / JWT 备份文件
@@ -62,29 +76,46 @@
 
 ## 支持平台
 
-| 平台             | 分享解析 | 游客可用 | 登录方式                        |
-| -------------- | :--: | :--: | --------------------------- |
-| 夸克网盘           |   ✓  |  —   | WebView Cookie              |
-| UC 网盘          |   ✓  |  —   | WebView Cookie              |
-| 迅雷网盘           |   ✓  |  —   | 账号密码 / 短信验证码                |
-| 百度网盘           |   ✓  |  —   | WebView Cookie              |
-| 123 云盘         |   ✓  |  —   | 账号密码换 JWT                   |
-| 139 网盘（和彩云）    |   ✓  |  —   | WebView Cookie              |
-| 115 网盘         |   ✓  |  —   | WebView Cookie              |
-| 光鸭云盘           |   ✓  |  —   | 账号密码 / 短信验证码                |
-| 蓝奏云            |   ✓  |  —   | 账号密码                        |
-| 蓝奏云优享版         |   ✓  |  —   | 账号密码                        |
-| 小飞机网盘（feijipan） |   ✓  |   ✓  | 免登录                         |
-| 城通网盘（ctfile）    |   ✓  |   ✓  | 免登录                         |
-| PikPak         |   ✓  |  浏览 | access\_token / refresh\_token |
-| 联通云盘（wopan）    |   ✓  |  浏览 | Cookie / token              |
-| 天翼云盘（189）      |   ✓  |  浏览 | Cookie                      |
+| 平台             | 分享解析 | 游客可用 | Android 登录方式                 | 桌面端 |
+| -------------- | :--: | :--: | --------------------------- | :-: |
+| 夸克网盘           |   ✓  |  —   | WebView Cookie              |  ✓  |
+| UC 网盘          |   ✓  |  —   | WebView Cookie              |  ✓  |
+| 迅雷网盘           |   ✓  |  —   | 账号密码 / 短信验证码                |  ✓  |
+| 百度网盘           |   ✓  |  —   | WebView Cookie              |  ✓  |
+| 123 云盘         |   ✓  |  —   | 账号密码换 JWT                   |  ✓  |
+| 139 网盘（和彩云）    |   ✓  |  —   | WebView Cookie              |  ✓  |
+| 115 网盘         |   ✓  |  —   | WebView Cookie              |  ✓  |
+| 光鸭云盘           |   ✓  |  —   | 账号密码 / 短信验证码                |  ✓  |
+| 蓝奏云            |   ✓  |  —   | 账号密码                        |  ✓  |
+| 蓝奏云优享版         |   ✓  |  —   | 账号密码                        |  ✓  |
+| 小飞机网盘（feijipan） |   ✓  |   ✓  | 免登录                         |  ✓  |
+| 城通网盘（ctfile）    |   ✓  |   ✓  | 免登录                         |  ✓  |
+| PikPak         |   ✓  |  浏览 | access\_token / refresh\_token |  ✓  |
+| 联通云盘（wopan）    |   ✓  |  浏览 | Cookie / token              |  ✓  |
+| 天翼云盘（189）      |   ✓  |  浏览 | Cookie                      |  ✓  |
 
 > \[!WARNING]
 > **不建议使用百度网盘，可能导致账号被风控！**
 
 > \[!NOTE]
 > 其他网盘暂未支持，如有需要欢迎到 QQ 交流群（群号 436393968）反馈。
+
+## Android / Windows 双端
+
+两端共用同一个解析内核（`app/src/main/kotlin/.../data/` 下的 Api / Repository 层），差异只在 UI 与平台能力：
+
+| 项 | Android | Windows 桌面端 |
+| --- | --- | --- |
+| 语言 / UI | Kotlin + Jetpack Compose | Kotlin + Compose Desktop |
+| 包名 | `com.zayu.app` | `com.zayu.app`（同源共享模块） |
+| 启动器 | `MainActivity` | `Zayu-Desktop.exe` / `com.zayu.app.MainKt` |
+| 数据目录 | 应用私有目录 | `~/.zayu-desktop`（可用 `ZAYU_DESKTOP_DATA_DIR` 覆盖） |
+| 数据库 | `zayu.db`（Room） | `zayu.db`（Room JVM） |
+| 界面风格 | 液态玻璃（RenderEffect + AGSL） | 玻璃拟态（自绘 Surface） |
+| 局域网互传 | ✓ | ✓ |
+| 系统级下载续传 | 前台服务 + 通知 | 原生文件写入 |
+
+旧版本遗留的 `yunx.db` 会在首次启动时自动改名迁移到 `zayu.db`，不需要手动处理。
 
 ## 使用
 
@@ -95,21 +126,39 @@
 
 ## 技术栈
 
-| 分类  | 选型                                     |
-| --- | -------------------------------------- |
-| 语言  | Kotlin                                 |
-| UI  | Jetpack Compose + Material 3 Expressive |
-| 持久化 | Room（KSP 注解处理）+ SharedPreferences      |
-| 网络  | OkHttp 4.12.0（请求 + 分片下载）               |
-| 构建  | Gradle + KSP                           |
+| 分类 | 选型 | 备注 |
+| --- | --- | --- |
+| 语言 | Kotlin | 双端共用 |
+| UI | Jetpack Compose + Material 3 Expressive / Compose Desktop | |
+| 持久化 | Room（KSP 注解处理）+ SharedPreferences | 桌面端 Room JVM |
+| 网络 | OkHttp 4.12.0 | 请求 + 分片下载 |
+| 加解密 | Android Keystore + AES-GCM | 桌面端走本地密钥文件 |
+| 构建 | Gradle + KSP | 双端同一 Gradle 工程 |
 
 ## 构建
+
+### Android
 
 要求：minSdk 24，targetSdk 34。
 
 用 Android Studio 打开项目直接构建即可。项目在 AndroidIDE 上开发调试，理论上也兼容其它 Android 构建环境。
 
+```bash
+./gradlew assembleDebug      # 出 debug 包
+./gradlew assembleRelease    # 出 release 包（需签名配置）
+```
+
 仓库自带 `debug.keystore`，无需配置签名即可 `assembleDebug` 出包；要打 release 包时把自己的 `keystore.properties` 放到仓库根目录或上级目录即可。
+
+### Windows 桌面端
+
+需要 JDK 17。桌面端模块在独立仓库 [Zayu-Desktop](https://github.com/BingYan001/Zayu-Desktop)，构建走 Gradle + jpackage：
+
+```bash
+./gradlew :desktop:packageReleaseDistributable   # 出便携目录
+```
+
+打包成安装程序用仓库里的 `installer/Zayu-Desktop.iss`（Inno Setup 6）。
 
 ## 常见问题
 
@@ -123,7 +172,7 @@
 <details>
 <summary><b>有没有 PC 端？</b></summary>
 
-有，见 [Zayu-Desktop](https://github.com/tidain/YunX-Desktop)（Windows）。
+有，见 [Zayu-Desktop](https://github.com/BingYan001/Zayu-Desktop)（Windows）。安装版与便携版都在 [官网下载页](https://zayu.pw)。
 
 </details>
 
@@ -131,6 +180,23 @@
 <summary><b>PikPak / 联通 / 天翼为什么显示未登录？</b></summary>
 
 这三家需要 token 或 Cookie 才能取直链。点卡片进登录弹窗填入凭证即可；未登录时仍可浏览分享内容里的文件列表。
+
+</details>
+
+<details>
+<summary><b>桌面端启动后找不到数据库 / 数据丢了？</b></summary>
+
+从旧版（YunX 时代）升级时，程序会自动把 `~/.yunx-desktop` 下的数据迁移到 `~/.zayu-desktop`
+（不含 cache），数据库 `yunx.db` 三件套（`.db` / `-wal` / `-shm`）改名为 `zayu.db`。
+如果新库里已有数据则不会覆盖。手动迁移也可以：直接复制整个旧目录到新目录，再把库名改成 `zayu.db`。
+
+</details>
+
+<details>
+<summary><b>为什么改名了？</b></summary>
+
+项目原名 YunX，现统一为「杂鱼Max / Zayu」。包名、启动器、数据目录、数据库名全部同步改过，
+文档里出现的 YunX 均为历史遗留称呼，指的都是现在这个项目。
 
 </details>
 
